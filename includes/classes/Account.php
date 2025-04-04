@@ -9,11 +9,11 @@ class Account {
     }
 
     public function register($fn, $ln, $un, $em, $em2, $pw, $pw2) {
-        this->validateFirstName($fn);
-        this->validateLastName($ln);
-        this->validateUsername($un);
-        this->validateEmails($em, $em2);
-        this->validatePasswords($pw, $pw2);
+        $this->validateFirstName($fn);
+        $this->validateLastName($ln);
+        $this->validateUsername($un);
+        $this->validateEmails($em, $em2);
+        $this->validatePasswords($pw, $pw2);
 
         if(empty($this->errorArray)) { // function empty() checks arrays
             return $this->insertUserDetails($fn, $ln, $un, $em, $pw);
@@ -26,7 +26,7 @@ class Account {
 
         $pw = hash("sha512", $pw);
 
-        $query=this->con->prepare("INSERT INTO users ($firstName, lastName, username, email, password)
+        $query=$this->con->prepare("INSERT INTO users (firstName, lastName, username, email, password)
                                     VALUES (:fn, :ln, :un, :em, :pw)"); // placeholders
         // bind values to our placeholders
         $query->bindValue(":fn", $fn);                            
