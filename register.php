@@ -1,6 +1,7 @@
 <?php 
 require_once("includes/config.php");
 require_once("includes/classes/Account.php");
+require_once("includes/classes/Constants.php");
 require_once("includes/classes/FormSanitizer.php");
 
     $account = new Account($con);
@@ -12,8 +13,15 @@ require_once("includes/classes/FormSanitizer.php");
         $username = FormSanitizer::sanitizeFormString($_POST["username"]);
         $email = FormSanitizer::sanitizeFormEmail($_POST["email"]);
         $email2 = FormSanitizer::sanitizeFormEmail($_POST["email2"]);
-        $password = FormSanitizer::sanitizeFormEmail($_POST["password"]);
-        $password2 = FormSanitizer::sanitizeFormEmail($_POST["password2"]);
+        $password = FormSanitizer::sanitizeFormPassword($_POST["password"]);
+        $password2 = FormSanitizer::sanitizeFormPassword($_POST["password2"]);
+
+        $success = $account->register($firstName, $lastName, $username, $email, $email2, $password, $password2);
+
+        if($success) {
+            // store session variables
+            header("Location: index.php"); // go to this page
+        }
     }        
 ?>
 
@@ -36,12 +44,21 @@ require_once("includes/classes/FormSanitizer.php");
             </div>
 
             <form method="POST">
-
+             
+                <?php echo $account->getError(Constants::$firstNameCharacters); ?>
                 <input type="text" name="firstName" placeholder="First Name" required>
+                <?php echo $account->getError(Constants::$lastNameCharacters); ?>
                 <input type="text" name="lastName" placeholder="Last Name" required>
+                <?php echo $account->getError(Constants::$usernameCharacters); ?>
+                <?php echo $account->getError(Constants::$usernameTaken); ?>
                 <input type="text" name="username" placeholder="Username" required>
+                <?php echo $account->getError(Constants::$emailsDontMatch); ?>
+                <?php echo $account->getError(Constants::$emailInvalid); ?>
+                <?php echo $account->getError(Constants::$emailTaken); ?>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="email" name="email2" placeholder="Confirm email" required>
+                <?php echo $account->getError(Constants::$passwordsDontMatch); ?>
+                <?php echo $account->getError(Constants::$passwordLength); ?>
                 <input type="password" name="password" placeholder="Password" required>
                 <input type="password" name="password2" placeholder="Confirm Password" required>
                 <input type="submit" name="submitButton" value="Submit">
