@@ -1,6 +1,14 @@
 <?php
     if(isset($_POST["submitButton"])) {
-        echo "Form was submitted";
+        $username = FormSanitizer::sanitizeFormString($_POST["username"]);
+        $password = FormSanitizer::sanitizeFormPassword($_POST["password"]);
+
+        $success = $account->register($firstName, $lastName, $username, $email, $email2, $password, $password2);
+
+        if($success) {
+            // store session variables
+            header("Location: index.php"); // go to this page
+        }
 
     }
 ?>
