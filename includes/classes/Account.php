@@ -22,6 +22,24 @@ class Account {
         return false;
     }
 
+    public function login($un, $pw) {
+        $pw = hash("sha512", $pw);
+
+        $query=$this->con->prepare("SELECT * FROM users WHERE username=:un AND password=:pw");
+        // bind values to our placeholders                            
+        $query->bindValue(":un", $un);                                                       
+        $query->bindValue(":pw", $pw);                            
+        // execute
+        $query->execute();
+
+        if($query->rowCount() == 1) {
+            return true;
+        }
+        array_push($this->errorArray, Constants::$loginFailed);
+        return false;
+    }
+
+
     private function insertUserDetails($fn, $ln, $un, $em, $pw) { // dont need $em2 nor $pw2
 
         $pw = hash("sha512", $pw);
@@ -59,7 +77,7 @@ class Account {
             // output this string if exist in array
         }
  // prepare a query and bind a parameter. protect from sql injection
-        $query = $this->con->prepare("SELECT * FROM users WHERE un=:un");
+        $query = $this->con->prepare("SELECT * FROM users WHERE username=:un");
         $query->bindValue(":un", $un);
         $query->execute();
 
