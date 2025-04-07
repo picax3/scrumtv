@@ -1,0 +1,33 @@
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+    volumes:
+       - ./init-scripts:/docker-entrypoint-initdb.d
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_server
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    command: php -S 0.0.0.0:8080
+    depends_on:
+      - db
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+  
