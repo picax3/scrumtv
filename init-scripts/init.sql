@@ -49,7 +49,7 @@ CREATE TABLE entities (
   thumbnail varchar(250) NOT NULL,
   preview varchar(250) NOT NULL,
   categoryId int(11) NOT NULL
-  FOREIGN KEY (categoryId) REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE;
+  CONSTRAINT fk_category FOREIGN KEY (categoryId) REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
