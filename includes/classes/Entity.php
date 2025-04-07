@@ -58,7 +58,7 @@ class Entity {
             }
 // if no videos in the season dont create object for that
             if(sizeof($videos) != 0) {
-                $seasons[] = new Seasons($currentSeason, $videos);
+                $seasons[] = new Season($currentSeason, $videos);
             }
 
             return $seasons;
