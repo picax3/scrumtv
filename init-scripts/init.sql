@@ -14,13 +14,10 @@ CREATE TABLE users (
   email VARCHAR(100) NOT NULL,
   password VARCHAR(255) NOT NULL,
   signUpDate DATETIME NOT NULL DEFAULT current_timestamp(),
-  isSubscribed TINYINT(4) NOT NULL
+  isSubscribed TINYINT(4) NOT NULL DEFAULT 0;
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE categories (
-  id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE categories (id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, name varchar(50) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO categories (id, name) VALUES
 (1, 'Action & adventure'),
@@ -48,8 +45,8 @@ CREATE TABLE entities (
   name varchar(250) NOT NULL,
   thumbnail varchar(250) NOT NULL,
   preview varchar(250) NOT NULL,
-  categoryId int(11) NOT NULL
-  CONSTRAINT fk_category FOREIGN KEY (categoryId) REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE
+  categoryId int(11) NOT NULL,
+  CONSTRAINT fk_category FOREIGN KEY (categoryId) REFERENCES categories(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
