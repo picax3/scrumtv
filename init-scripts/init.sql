@@ -17,13 +17,8 @@ CREATE TABLE users (
   isSubscribed TINYINT(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-ALTER TABLE users
-  ADD PRIMARY KEY (id);
-COMMIT;
-
-
 CREATE TABLE categories (
-  id int(11) NOT NULL,
+  id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -48,21 +43,13 @@ INSERT INTO categories (id, name) VALUES
 (19, 'Others'),
 (20, 'Cartoon');
 
-
-ALTER TABLE categories
-  ADD PRIMARY KEY (id);
-
-ALTER TABLE categories
-  MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-COMMIT;
-
-
 CREATE TABLE entities (
-  id int(11) NOT NULL,
+  id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name varchar(250) NOT NULL,
   thumbnail varchar(250) NOT NULL,
   preview varchar(250) NOT NULL,
   categoryId int(11) NOT NULL
+  FOREIGN KEY (categoryId) REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE;
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -116,16 +103,4 @@ INSERT INTO entities (id, name, thumbnail, preview, categoryId) VALUES
 (98, 'Cloudy with a Chance of Meatballs', 'entities/thumbnails/cwc.jpg', 'entities/previews/4.mp4', 13),
 (99, 'District 9', 'entities/thumbnails/d9.jpg', 'entities/previews/5.mp4', 9);
 
-
-ALTER TABLE entities
-  ADD PRIMARY KEY (id),
-  ADD KEY categoryId (categoryId);
-
-
-ALTER TABLE entities
-  MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
-
-ALTER TABLE entities
-  ADD CONSTRAINT entities_ibfk_1 FOREIGN KEY (categoryId) REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
